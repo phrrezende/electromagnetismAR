@@ -35,6 +35,6 @@ public class MainActivity extends ARActivity {
 
     @Override
     protected FrameLayout supplyFrameLayout() {
-        return null;
+        return (FrameLayout) this.findViewById(R.id.mainFrameLayout);
     }
 }
