@@ -19,7 +19,6 @@ public class MainActivity extends ARActivity {
     }
 
 
-
     private void initializeInstance() {
         // Unpack assets to cache directory so native library can read them.
         // N.B.: If contents of assets folder changes, be sure to increment the
@@ -31,7 +30,7 @@ public class MainActivity extends ARActivity {
 
     @Override
     protected ARRenderer supplyRenderer() {
-        return null;
+        return new ElectromagnetismRenderer(getApplicationContext());
     }
 
     @Override
