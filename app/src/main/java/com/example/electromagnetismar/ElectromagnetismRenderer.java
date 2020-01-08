@@ -20,6 +20,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
+    private MagneticField mMagneticField;
 
     //TODO: I think we should add the trackable class to the library (arxj)
 
@@ -54,6 +55,13 @@ public class ElectromagnetismRenderer extends ARRenderer {
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         this.shaderProgram = new SimpleShaderProgram(new SimpleVertexShader(), new SimpleFragmentShader());
 
+        try{
+            mMagneticField = new MagneticField(this.context);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        super.onSurfaceCreated(unused, config);
     }
 
 
@@ -76,6 +84,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
             if ((trackableUID == 0) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
 
+                mMagneticField.draw(projectionMatrix,modelViewMatrix);
             }
             if ((trackableUID == 1) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
