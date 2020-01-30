@@ -134,7 +134,7 @@ public class MagneticField {
         GLES20.glUniformMatrix4fv(matrix, 1, false, productMatrix, 0);
         GLES20.glUniformMatrix4fv(getProjectionMatrixHandle(), 1, false, projectionMatrix, 0);
         GLES20.glUniformMatrix4fv(getModelViewMatrixHandle(), 1, false, viewMatrix, 0);
-        GLES20.glDrawElements(GLES20.GL_LINES,
+        GLES20.glDrawElements(GLES20.GL_TRIANGLES,
                 facesList.size() * 3, GLES20.GL_UNSIGNED_SHORT, facesBuffer);
         GLES20.glDisableVertexAttribArray(position);
     }
