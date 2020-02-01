@@ -56,7 +56,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
         this.shaderProgram = new SimpleShaderProgram(new SimpleVertexShader(), new SimpleFragmentShader());
 
         try{
-            mMagneticField = new MagneticField(this.context);
+            mMagneticField = new MagneticField(this.context, "campo_magnetico_22.obj");
         }catch (IOException e){
             e.printStackTrace();
         }
