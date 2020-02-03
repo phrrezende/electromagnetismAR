@@ -28,19 +28,17 @@ public abstract class TemplateObjectAr {
                     "void main() {"+
                     " gl_Position = matrix * position;"+
                     "}";
-    private  String fragmentShaderCode =
-            "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(0, 0, 0.78999, 1.0);"+
-                    "}";
     private String objectPath;
 
     public TemplateObjectAr (Context context, String objectPath ) throws IOException {
-        verticesList = new ArrayList<>();
-        facesList = new ArrayList<>();
-
         this.context = context;
         this.objectPath = objectPath;
+    }
+
+    public void glLinkProgram( String fragmentShaderCode) throws IOException {
+
+        verticesList = new ArrayList<>();
+        facesList = new ArrayList<>();
 
         Scanner scanner = new Scanner(context.getAssets().open(this.objectPath));
 
@@ -73,6 +71,7 @@ public abstract class TemplateObjectAr {
             verticesBuffer.put(y);
             verticesBuffer.put(z);
         }
+        verticesBuffer.position(0);
 
         for(String face: facesList) {
             String vertexIndices[] = face.split(" ");
@@ -109,6 +108,12 @@ public abstract class TemplateObjectAr {
         return GLES20.glGetUniformLocation(program, OpenGLShader.modelViewMatrixString);
     }
 
+
+    public int getSizeFacesList(){
+        return facesList.size();
+    }
+
+
     public void draw(float[] projectionMatrix, float[] viewMatrix){
         GLES20.glUseProgram(program);
         int position = GLES20.glGetAttribLocation(program, "position");
@@ -116,7 +121,6 @@ public abstract class TemplateObjectAr {
 
         GLES20.glVertexAttribPointer(position,
                 3, GLES20.GL_FLOAT, false, 3 * 4, verticesBuffer);
-
 
         float[] productMatrix = new float[16];
         Matrix.multiplyMM(productMatrix, 0,
@@ -127,12 +131,8 @@ public abstract class TemplateObjectAr {
         GLES20.glUniformMatrix4fv(getProjectionMatrixHandle(), 1, false, projectionMatrix, 0);
         GLES20.glUniformMatrix4fv(getModelViewMatrixHandle(), 1, false, viewMatrix, 0);
         GLES20.glDrawElements(GLES20.GL_TRIANGLES,
-                facesList.size() * 3, GLES20.GL_UNSIGNED_SHORT, facesBuffer);
+                getSizeFacesList() * 3, GLES20.GL_UNSIGNED_SHORT, facesBuffer);
         GLES20.glDisableVertexAttribArray(position);
-    }
-
-    public void setFragmentShaderCode(String fragmentShaderCode){
-        this.fragmentShaderCode = fragmentShaderCode;
     }
 
 }
