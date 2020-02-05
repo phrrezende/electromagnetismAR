@@ -28,17 +28,20 @@ public class MagneticField {
                     "void main() {"+
                     " gl_Position = matrix * position;"+
                     "}";
-    private String fragmentShaderCode;
+    private final String fragmentShaderCode =
+            "precision mediump float;"+
+                    "void main() {"+
+                    "gl_FragColor = vec4(0, 0, 0.78999, 1.0);"+
+                    "}";
 
 
 
-    public MagneticField(Context context, String objectPath, String fragmentShaderCode) throws IOException {
+    public MagneticField(Context context) throws IOException {
         verticesList = new ArrayList<>();
         facesList = new ArrayList<>();
         this.context = context;
-        this.fragmentShaderCode = fragmentShaderCode;
 
-        Scanner scanner = new Scanner(context.getAssets().open(objectPath));
+        Scanner scanner = new Scanner(context.getAssets().open("campo_magnetico_22.obj"));
 
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
@@ -93,7 +96,7 @@ public class MagneticField {
         GLES20.glShaderSource(vertexShader,vertexShaderCode );
 
         int fragmentShader = GLES20.glCreateShader(GLES20.GL_FRAGMENT_SHADER);
-        GLES20.glShaderSource(fragmentShader, this.fragmentShaderCode);
+        GLES20.glShaderSource(fragmentShader, fragmentShaderCode);
 
         GLES20.glCompileShader(vertexShader);
         GLES20.glCompileShader(fragmentShader);
