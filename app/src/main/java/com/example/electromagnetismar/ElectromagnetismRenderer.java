@@ -28,9 +28,9 @@ public class ElectromagnetismRenderer extends ARRenderer {
             "}";
     private final String fragmentShaderCodeRed =
             "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(1, 0, 0, 1.0);"+
-                    "}";
+            "void main() {"+
+            "gl_FragColor = vec4(1, 0, 0, 1.0);"+
+            "}";
 
     //TODO: I think we should add the trackable class to the library (arxj)
 
