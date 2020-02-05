@@ -9,15 +9,13 @@ import java.io.IOException;
 
 public class MagneticField extends TemplateObjectAr {
 
-    private  String fragmentShaderCode =
-            "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(1, 0, 0, 1.0);"+
-                    "}";
+    private  String fragmentShaderCode;
 
-    public MagneticField(Context context, String objectPath ) throws IOException {
+    public MagneticField(Context context, String objectPath, String fragmentShaderCode ) throws IOException {
         super(context, objectPath);
+        this.fragmentShaderCode = fragmentShaderCode;
         super.glLinkProgram(this.getFragmentShaderCode());
+
     }
 
     public String getFragmentShaderCode() {

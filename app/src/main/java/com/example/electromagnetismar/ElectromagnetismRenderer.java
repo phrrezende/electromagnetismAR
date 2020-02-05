@@ -20,7 +20,17 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
-    private MagneticField mMagneticField;
+    private MagneticField iman, ondas;
+    private final String fragmentShaderCodeBrown =
+            "precision mediump float;"+
+            "void main() {"+
+            "gl_FragColor = vec4(0.5, 0.2, 0, 1.0);"+
+            "}";
+    private final String fragmentShaderCodeRed =
+            "precision mediump float;"+
+                    "void main() {"+
+                    "gl_FragColor = vec4(1, 0, 0, 1.0);"+
+                    "}";
 
     //TODO: I think we should add the trackable class to the library (arxj)
 
@@ -56,7 +66,8 @@ public class ElectromagnetismRenderer extends ARRenderer {
         this.shaderProgram = new SimpleShaderProgram(new SimpleVertexShader(), new SimpleFragmentShader());
 
         try{
-            mMagneticField = new MagneticField(this.context, "campo_magnetico_22.obj");
+            iman = new MagneticField(this.context, "campo_magnetico_22_iman.obj", fragmentShaderCodeBrown);
+            ondas = new MagneticField(this.context, "campo_magnetico_22_ondas.obj", fragmentShaderCodeRed);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -84,7 +95,8 @@ public class ElectromagnetismRenderer extends ARRenderer {
             if ((trackableUID == 0) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
 
-                mMagneticField.draw(projectionMatrix,modelViewMatrix);
+                ondas.draw(projectionMatrix,modelViewMatrix);
+                iman.draw(projectionMatrix,modelViewMatrix);
             }
             if ((trackableUID == 1) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
