@@ -1,5 +1,6 @@
 package com.example.electromagnetismar;
 
+
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
@@ -15,33 +16,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MagneticField {
+public class MagneticField  {
+
     private List<String> verticesList;
     private List<String> facesList;
     private FloatBuffer verticesBuffer;
     private ShortBuffer facesBuffer;
     private int program;
     private Context context;
-    private final String vertexShaderCode =
+    private  String vertexShaderCode =
             "attribute vec4 position;"+
-                    "uniform mat4 matrix;"+
-                    "void main() {"+
-                    " gl_Position = matrix * position;"+
-                    "}";
-    private final String fragmentShaderCode =
-            "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(0, 0, 0.78999, 1.0);"+
-                    "}";
+            "uniform mat4 matrix;"+
+            "void main() {"+
+            " gl_Position = matrix * position;"+
+            "}";
+    private String fragmentShaderCode;
+    private String objectPath;
 
+    public MagneticField (Context context, String objectPath, String fragmentShaderCode ) throws IOException {
+        this.context = context;
+        this.objectPath = objectPath;
+        this.fragmentShaderCode = fragmentShaderCode;
+        glLinkProgram(this.fragmentShaderCode);
+    }
 
+    public void glLinkProgram( String fragmentShaderCode) throws IOException {
 
-    public MagneticField(Context context) throws IOException {
         verticesList = new ArrayList<>();
         facesList = new ArrayList<>();
-        this.context = context;
 
-        Scanner scanner = new Scanner(context.getAssets().open("campo_magnetico_22.obj"));
+        Scanner scanner = new Scanner(context.getAssets().open(this.objectPath));
 
         while (scanner.hasNextLine()){
             String line = scanner.nextLine();
@@ -85,13 +89,6 @@ public class MagneticField {
         }
         facesBuffer.position(0);
 
-//        InputStream vertexShaderStream = context.getResources().openRawResource(R.raw.vertex_shader);
-//        this.vertexShaderCode = IOUtils.toString(vertexShaderStream, Charset.defaultCharset());
-//        vertexShaderStream.close();
-//        InputStream fragmentShaderStream = context.getResources().openRawResource(R.raw.fragment_shader);
-//        this.fragmentShaderCode = IOUtils.toString(fragmentShaderStream, Charset.defaultCharset());
-//        fragmentShaderStream.close();
-
         int vertexShader = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
         GLES20.glShaderSource(vertexShader,vertexShaderCode );
 
@@ -106,8 +103,6 @@ public class MagneticField {
         GLES20.glAttachShader(program, fragmentShader);
 
         GLES20.glLinkProgram(program);
-        //
-
     }
 
     public int getProjectionMatrixHandle() {
@@ -117,6 +112,13 @@ public class MagneticField {
     public int getModelViewMatrixHandle() {
         return GLES20.glGetUniformLocation(program, OpenGLShader.modelViewMatrixString);
     }
+
+
+    public int getSizeFacesList(){
+        return facesList.size();
+    }
+
+
     public void draw(float[] projectionMatrix, float[] viewMatrix){
         GLES20.glUseProgram(program);
         int position = GLES20.glGetAttribLocation(program, "position");
@@ -124,7 +126,6 @@ public class MagneticField {
 
         GLES20.glVertexAttribPointer(position,
                 3, GLES20.GL_FLOAT, false, 3 * 4, verticesBuffer);
-
 
         float[] productMatrix = new float[16];
         Matrix.multiplyMM(productMatrix, 0,
@@ -135,7 +136,7 @@ public class MagneticField {
         GLES20.glUniformMatrix4fv(getProjectionMatrixHandle(), 1, false, projectionMatrix, 0);
         GLES20.glUniformMatrix4fv(getModelViewMatrixHandle(), 1, false, viewMatrix, 0);
         GLES20.glDrawElements(GLES20.GL_TRIANGLES,
-                facesList.size() * 3, GLES20.GL_UNSIGNED_SHORT, facesBuffer);
+                getSizeFacesList() * 3, GLES20.GL_UNSIGNED_SHORT, facesBuffer);
         GLES20.glDisableVertexAttribArray(position);
     }
 }
