@@ -20,27 +20,13 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
-    private MagneticField iman, ondas, forcaCampoMagnetico, forcaMagnetica, forcaCorrenteEletrica;
-    private final String fragmentShaderCodeBrown =
-            "precision mediump float;"+
-            "void main() {"+
-            "gl_FragColor = vec4(0.5, 0.2, 0, 1.0);"+
-            "}";
+    private MagneticField ondas;
+
     private final String fragmentShaderCodeRed =
             "precision mediump float;"+
             "void main() {"+
             "gl_FragColor = vec4(1, 0, 0, 1.0);"+
             "}";
-    private final String fragmentShaderCodeGreen =
-            "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(0, 1, 0, 1.0);"+
-                    "}";
-    private final String fragmentShaderCodeBlue =
-            "precision mediump float;"+
-                    "void main() {"+
-                    "gl_FragColor = vec4(0, 0, 1, 1.0);"+
-                    "}";
     //TODO: I think we should add the trackable class to the library (arxj)
 
     public ElectromagnetismRenderer(Context context){
@@ -48,8 +34,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
     }
 
     private static final Trackable trackables[] = new Trackable[]{
-            new Trackable("hiro", 80.0f),
-            new Trackable("kanji", 80.0f)
+            new Trackable("hiro", 80.0f)
     };
     private int trackableUIDs[] = new int[trackables.length];
 
@@ -75,17 +60,10 @@ public class ElectromagnetismRenderer extends ARRenderer {
         this.shaderProgram = new SimpleShaderProgram(new SimpleVertexShader(), new SimpleFragmentShader());
 
         try{
-            iman = new MagneticField(this.context, "campo-magnetico-iman.obj", fragmentShaderCodeBrown);
             ondas = new MagneticField(this.context, "campo-magnetico-ondas.obj", fragmentShaderCodeRed);
-            forcaMagnetica = new MagneticField(this.context, "forca-magnetica.obj", fragmentShaderCodeBlue);
-            forcaCampoMagnetico = new MagneticField(this.context, "campo-magnetico.obj", fragmentShaderCodeGreen);
-            forcaCorrenteEletrica = new MagneticField(this.context, "corrente-eletrica.obj", fragmentShaderCodeRed);
-
-
         }catch (IOException e){
             e.printStackTrace();
         }
-
         super.onSurfaceCreated(unused, config);
     }
 
@@ -108,17 +86,9 @@ public class ElectromagnetismRenderer extends ARRenderer {
             //identificar o que é o modelViewMatrix
             if ((trackableUID == 0) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
-
                 ondas.draw(projectionMatrix,modelViewMatrix);
-                iman.draw(projectionMatrix,modelViewMatrix);
             }
-            if ((trackableUID == 1) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
-                float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
 
-                forcaMagnetica.draw(projectionMatrix,modelViewMatrix);
-                forcaCorrenteEletrica.draw(projectionMatrix,modelViewMatrix);
-                forcaCampoMagnetico.draw(projectionMatrix,modelViewMatrix);
-            }
         }
     }
 }
