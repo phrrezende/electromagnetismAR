@@ -20,11 +20,11 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
-    private MagneticField  forcaCampoMagnetico, forcaMagnetica, forcaCorrenteEletrica, teste;
+    private MagneticField  forcaCampoMagnetico, forcaMagnetica, forcaCorrenteEletrica, forcaCampoMagnetico45, forcaMagnetica45, forcaCorrenteEletrica45, graus;
     private final String fragmentShaderCodeBrown =
             "precision mediump float;"+
             "void main() {"+
-            "gl_FragColor = vec4(0.5, 0.2, 0, 1.0);"+
+            "gl_FragColor = vec4(0.5, 0.2, 0.4, 1.0);"+
             "}";
     private final String fragmentShaderCodeRed =
             "precision mediump float;"+
@@ -78,6 +78,11 @@ public class ElectromagnetismRenderer extends ARRenderer {
             forcaMagnetica = new MagneticField(this.context, "magneto-forca-forca-magnetica.obj", fragmentShaderCodeBlue);
             forcaCampoMagnetico = new MagneticField(this.context, "magneto-forca-campo-magnetico.obj", fragmentShaderCodeGreen);
             forcaCorrenteEletrica = new MagneticField(this.context, "magneto-forca-corrente-eletrica.obj", fragmentShaderCodeRed);
+            forcaMagnetica45 = new MagneticField(this.context, "magneto-forca-magnetica-45.obj", fragmentShaderCodeBlue);
+            forcaCampoMagnetico45 = new MagneticField(this.context, "magneto-campo-magnetico-45.obj", fragmentShaderCodeGreen);
+            forcaCorrenteEletrica45 = new MagneticField(this.context, "magneto-corrente-eletrica-45.obj", fragmentShaderCodeRed);
+            graus = new MagneticField(this.context, "magneto-45-graus.obj", fragmentShaderCodeBrown);
+
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -112,7 +117,11 @@ public class ElectromagnetismRenderer extends ARRenderer {
             if ((trackableUID == 1) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
 
-                //novos objetos
+                forcaMagnetica45.draw(projectionMatrix,modelViewMatrix);
+                forcaCampoMagnetico45.draw(projectionMatrix,modelViewMatrix);
+                forcaCorrenteEletrica45.draw(projectionMatrix,modelViewMatrix);
+                graus.draw(projectionMatrix,modelViewMatrix);
+
             }
         }
     }
