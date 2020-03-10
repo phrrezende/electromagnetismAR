@@ -1,4 +1,4 @@
-package com.example.electromagnetismar;
+package com.ifsuldeminas.faradayinduzido;
 
 import android.content.Context;
 

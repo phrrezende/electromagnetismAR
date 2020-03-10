@@ -1,4 +1,4 @@
-package com.example.electromagnetismar;
+package com.ifsuldeminas.faradayinduzido;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -6,7 +6,6 @@ import android.opengl.GLES20;
 import org.artoolkitx.arx.arxj.ARController;
 import org.artoolkitx.arx.arxj.Trackable;
 import org.artoolkitx.arx.arxj.rendering.ARRenderer;
-import org.artoolkitx.arx.arxj.rendering.shader_impl.Cube;
 import org.artoolkitx.arx.arxj.rendering.shader_impl.SimpleFragmentShader;
 import org.artoolkitx.arx.arxj.rendering.shader_impl.SimpleShaderProgram;
 import org.artoolkitx.arx.arxj.rendering.shader_impl.SimpleVertexShader;

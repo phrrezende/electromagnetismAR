@@ -1,6 +1,4 @@
-package com.example.electromagnetismar;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.ifsuldeminas.faradayinduzido;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
