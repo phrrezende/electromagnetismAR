@@ -19,13 +19,18 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
-    private MagneticField ondas;
+    private MagneticField ondas,setas;
 
     private final String fragmentShaderCodeRed =
             "precision mediump float;"+
             "void main() {"+
             "gl_FragColor = vec4(1, 0, 0, 1.0);"+
             "}";
+    private final String fragmentShaderCodePurple =
+            "precision mediump float;"+
+                    "void main() {"+
+                    "gl_FragColor = vec4(0.5, 0, 0.5, 1.0);"+
+                    "}";
     //TODO: I think we should add the trackable class to the library (arxj)
 
     public ElectromagnetismRenderer(Context context){
@@ -60,6 +65,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
         try{
             ondas = new MagneticField(this.context, "campo-magnetico-ondas.obj", fragmentShaderCodeRed);
+            setas = new MagneticField(this.context, "campo-magnetico-setas.obj", fragmentShaderCodePurple);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -86,6 +92,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
             if ((trackableUID == 0) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
                 ondas.draw(projectionMatrix,modelViewMatrix);
+                setas.draw(projectionMatrix,modelViewMatrix);
             }
 
         }
