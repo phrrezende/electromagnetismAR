@@ -19,7 +19,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
 
     private SimpleShaderProgram shaderProgram;
     private Context context;
-    private MagneticField ondas,setas;
+    private MagneticField campo_magnetico;
 
     private final String fragmentShaderCodeRed =
             "precision mediump float;"+
@@ -64,8 +64,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
         this.shaderProgram = new SimpleShaderProgram(new SimpleVertexShader(), new SimpleFragmentShader());
 
         try{
-            ondas = new MagneticField(this.context, "campo-magnetico-ondas.obj", fragmentShaderCodeRed);
-            setas = new MagneticField(this.context, "campo-magnetico-setas.obj", fragmentShaderCodePurple);
+            campo_magnetico = new MagneticField(this.context, "campo-magnetico.obj", fragmentShaderCodeRed);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -91,8 +90,7 @@ public class ElectromagnetismRenderer extends ARRenderer {
             //identificar o que é o modelViewMatrix
             if ((trackableUID == 0) && (ARController.getInstance().queryTrackableVisibilityAndTransformation(trackableUID, modelViewMatrix))) {
                 float[] projectionMatrix = ARController.getInstance().getProjectionMatrix(10.0f, 10000.0f);
-                ondas.draw(projectionMatrix,modelViewMatrix);
-                setas.draw(projectionMatrix,modelViewMatrix);
+                campo_magnetico.draw(projectionMatrix,modelViewMatrix);
             }
 
         }
